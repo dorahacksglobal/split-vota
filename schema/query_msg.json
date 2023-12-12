@@ -1,0 +1,1 @@
+{"$schema":"http://json-schema.org/draft-07/schema#","title":"QueryMsg","anyOf":[{"$ref":"#/definitions/QueryMsg"}],"definitions":{"QueryMsg":{"oneOf":[{"type":"object","required":["admin_list"],"properties":{"admin_list":{"type":"object"}},"additionalProperties":false}]}}}
