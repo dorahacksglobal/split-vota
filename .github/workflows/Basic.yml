@@ -71,7 +71,7 @@ jobs:
           args: --locked
 
       - name: Verify schema
-        uses: tj-actions/verify-changed-files@v8
+        uses: tj-actions/verify-changed-files@v17
         id: verify-schema
         with:
           files: schema/.*\.json
