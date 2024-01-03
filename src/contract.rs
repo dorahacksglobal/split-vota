@@ -60,13 +60,45 @@ impl SplitContract<'_> {
 
     // ============= Execute ============= //
     #[msg(exec)]
+    pub fn add_member(
+        &self,
+        ctx: (DepsMut, Env, MessageInfo),
+        admin: String,
+    ) -> Result<Response, ContractError> {
+        let (deps, _, info) = ctx;
+        if !self.admins.has(deps.storage, &info.sender) {
+            return Err(ContractError::Unauthorized {
+                sender: info.sender,
+            });
+        }
+
+        let admin = deps.api.addr_validate(&admin)?;
+        if self.admins.has(deps.storage, &admin) {
+            return Err(ContractError::NoDupAddress { address: admin });
+        }
+
+        self.admins.save(deps.storage, &admin, &Empty {})?;
+
+        let resp = Response::new()
+            .add_attribute("action", "add_member")
+            .add_event(Event::new("admin_added").add_attribute("addr", admin));
+        Ok(resp)
+    }
+
+    #[msg(exec)]
     pub fn split(
         &self,
-        _ctx: (DepsMut, Env, MessageInfo),
+        ctx: (DepsMut, Env, MessageInfo),
         amounts: Vec<(Addr, Uint128, String)>,
     ) -> Result<Response, ContractError> {
-        let mut messages: Vec<BankMsg> = vec![];
+        let (deps, _env, info) = ctx;
+        if !self.admins.has(deps.storage, &info.sender) {
+            return Err(ContractError::Unauthorized {
+                sender: info.sender,
+            });
+        }
 
+        let mut messages: Vec<BankMsg> = vec![];
         for (receiver, amount, denom) in amounts {
             let transfer_message = BankMsg::Send {
                 to_address: receiver.into_string(),

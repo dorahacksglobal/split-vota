@@ -30,7 +30,7 @@ const rpcEndpoint = is_mainnet ?
   "https://vota-rpc.dorafactory.org"
   : "https://vota-testnet-rpc.dorafactory.org";
 const mnemonic = process.env.MNEMONIC as string;
-const chain_id = is_mainnet ? "vota-ash" : "cvota-testnet";
+const chain_id = is_mainnet ? "vota-ash" : "vota-testnet";
 const prefix = "dora";
 const denom = is_mainnet ? "peaka" : 'peaka';
 const decimals = 18;

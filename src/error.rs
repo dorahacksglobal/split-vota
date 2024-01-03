@@ -19,5 +19,9 @@ pub enum ContractError {
     NoDupAddress { address: Addr },
 
     #[error("{denom} expected {expected} but got {actual}")]
-    InvalidAmount { denom: String, expected: u128, actual: u128 },
+    InvalidAmount {
+        denom: String,
+        expected: u128,
+        actual: u128,
+    },
 }
